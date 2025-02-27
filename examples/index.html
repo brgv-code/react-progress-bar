@@ -1,148 +1,195 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>React Reading Progress Bar Demo</title>
-		<style>
-			body {
-				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-					Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-				line-height: 1.6;
-				margin: 0;
-				padding: 0;
-				color: #333;
-			}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Reading Progress Bar Demo</title>
+    <style>
+      :root {
+        --bg-color: #ffffff;
+        --text-color: #333333;
+        --border-color: #dddddd;
+        --input-border: #cccccc;
+        --section-bg: #f9f9f9;
+      }
 
-			.container {
-				max-width: 800px;
-				margin: 0 auto;
-				padding: 20px;
-			}
+      [data-theme='dark'] {
+        --bg-color: #1a1a1a;
+        --text-color: #f0f0f0;
+        --border-color: #444444;
+        --input-border: #555555;
+        --section-bg: #2a2a2a;
+      }
 
-			h1 {
-				font-size: 2.5rem;
-				margin-bottom: 1rem;
-			}
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+          Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+        background-color: var(--bg-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
 
-			h2 {
-				font-size: 1.8rem;
-				margin: 2rem 0 1rem;
-			}
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
 
-			p {
-				margin-bottom: 1.5rem;
-			}
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
 
-			.example-section {
-				margin-bottom: 3rem;
-				padding: 1.5rem;
-				border: 1px solid #ddd;
-				border-radius: 8px;
-			}
+      h2 {
+        font-size: 1.8rem;
+        margin: 2rem 0 1rem;
+      }
 
-			.controls {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 1rem;
-				margin-bottom: 1.5rem;
-			}
+      p {
+        margin-bottom: 1.5rem;
+      }
 
-			.control-group {
-				display: flex;
-				flex-direction: column;
-				min-width: 150px;
-			}
+      .example-section {
+        margin-bottom: 3rem;
+        padding: 1.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--section-bg);
+      }
 
-			label {
-				margin-bottom: 0.5rem;
-				font-weight: bold;
-			}
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
 
-			input,
-			select {
-				padding: 0.5rem;
-				border: 1px solid #ccc;
-				border-radius: 4px;
-			}
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        min-width: 150px;
+      }
 
-			.long-content {
-				height: 2000px;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="root"></div>
+      label {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
 
-		<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-		<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+      input,
+      select {
+        padding: 0.5rem;
+        border: 1px solid var(--input-border);
+        border-radius: 4px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
 
-		<script type="text/babel">
-			const ReadingProgressBar = ({
-				color = '#FFDD00',
-				height = 3,
-				className = '',
-				useGradient = true,
-				useGlow = true,
-				gradientColors,
-				glowIntensity = 0.7,
-				showAfterScroll = 100,
-				position = 'top',
-				zIndex = 40,
-				initiallyVisible = false,
-				style = {},
-			}) => {
-				const [readingProgress, setReadingProgress] = React.useState(0)
-				const [isVisible, setIsVisible] = React.useState(initiallyVisible)
+      .long-content {
+        height: 2000px;
+      }
 
-				React.useEffect(() => {
-					const updateReadingProgress = () => {
-						const currentPosition = window.scrollY
-						const scrollHeight = document.body.scrollHeight - window.innerHeight
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        background-color: var(--section-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        padding: 8px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
 
-						setIsVisible(currentPosition > showAfterScroll)
+      .theme-toggle:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
 
-						if (scrollHeight) {
-							setReadingProgress(
-								Number((currentPosition / scrollHeight).toFixed(2)),
-							)
-						}
-					}
+      .theme-toggle svg {
+        width: 16px;
+        height: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
 
-					updateReadingProgress()
-					window.addEventListener('scroll', updateReadingProgress)
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-					return () =>
-						window.removeEventListener('scroll', updateReadingProgress)
-				}, [showAfterScroll])
+    <script type="text/babel">
+      const ReadingProgressBar = ({
+        color = '#FFDD00',
+        height = 3,
+        className = '',
+        useGradient = true,
+        useGlow = true,
+        gradientColors,
+        glowIntensity = 0.7,
+        showAfterScroll = 100,
+        position = 'top',
+        zIndex = 40,
+        initiallyVisible = false,
+        style = {},
+      }) => {
+        const [readingProgress, setReadingProgress] = React.useState(0);
+        const [isVisible, setIsVisible] = React.useState(initiallyVisible);
 
-				const defaultGradientColors = [color, '#FFA500', '#FF8C00']
-				const finalGradientColors = gradientColors || defaultGradientColors
-				const gradientString = `linear-gradient(90deg, ${finalGradientColors.join(', ')})`
+        React.useEffect(() => {
+          const updateReadingProgress = () => {
+            const currentPosition = window.scrollY;
+            const scrollHeight = document.body.scrollHeight - window.innerHeight;
 
-				const hexOpacity = Math.floor(glowIntensity * 255)
-					.toString(16)
-					.padStart(2, '0')
+            setIsVisible(currentPosition > showAfterScroll);
 
-				const progressStyle = {
-					position: 'fixed',
-					[position]: 0,
-					left: 0,
-					zIndex,
-					width: '100%',
-					height: `${height}px`,
-					border: 'none',
-					appearance: 'none',
-					backgroundColor: 'transparent',
-					opacity: isVisible ? 1 : 0,
-					transition: 'opacity 300ms ease-in-out',
-					...style,
-				}
+            if (scrollHeight) {
+              setReadingProgress(Number((currentPosition / scrollHeight).toFixed(2)));
+            }
+          };
 
-				React.useEffect(() => {
-					const style = document.createElement('style')
-					style.textContent = `
+          updateReadingProgress();
+          window.addEventListener('scroll', updateReadingProgress);
+
+          return () => window.removeEventListener('scroll', updateReadingProgress);
+        }, [showAfterScroll]);
+
+        const defaultGradientColors = [color, '#FFA500', '#FF8C00'];
+        const finalGradientColors = gradientColors || defaultGradientColors;
+        const gradientString = `linear-gradient(90deg, ${finalGradientColors.join(', ')})`;
+
+        const hexOpacity = Math.floor(glowIntensity * 255)
+          .toString(16)
+          .padStart(2, '0');
+
+        const progressStyle = {
+          position: 'fixed',
+          [position]: 0,
+          left: 0,
+          zIndex,
+          width: '100%',
+          height: `${height}px`,
+          border: 'none',
+          appearance: 'none',
+          backgroundColor: 'transparent',
+          opacity: isVisible ? 1 : 0,
+          transition: 'opacity 300ms ease-in-out',
+          ...style,
+        };
+
+        React.useEffect(() => {
+          const style = document.createElement('style');
+          style.textContent = `
           progress {
             --progress-color: ${color};
             --progress-gradient: ${useGradient ? gradientString : color};
@@ -166,188 +213,226 @@
             border-radius: 0 4px 4px 0;
             transition: width 200ms ease-out;
           }
-        `
-					document.head.appendChild(style)
+        `;
+          document.head.appendChild(style);
 
-					return () => {
-						document.head.removeChild(style)
-					}
-				}, [color, useGradient, useGlow, gradientString, hexOpacity])
+          return () => {
+            document.head.removeChild(style);
+          };
+        }, [color, useGradient, useGlow, gradientString, hexOpacity]);
 
-				return (
-					<progress
-						className={`reading-progress ${className}`}
-						value={readingProgress}
-						max='1'
-						style={progressStyle}
-						aria-label='Reading progress'
-					/>
-				)
-			}
+        return (
+          <progress
+            className={`reading-progress ${className}`}
+            value={readingProgress}
+            max="1"
+            style={progressStyle}
+            aria-label="Reading progress"
+          />
+        );
+      };
 
-			const App = () => {
-				const [color, setColor] = React.useState('#FFDD00')
-				const [height, setHeight] = React.useState(3)
-				const [useGradient, setUseGradient] = React.useState(true)
-				const [useGlow, setUseGlow] = React.useState(true)
-				const [position, setPosition] = React.useState('top')
-				const [showAfterScroll, setShowAfterScroll] = React.useState(100)
+      const ThemeToggle = ({ theme, toggleTheme }) => {
+        return (
+          <button className="theme-toggle" onClick={toggleTheme}>
+            {theme === 'light' ? (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" />
+                </svg>
+                Dark Mode
+              </>
+            ) : (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0-7a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1zm0 17a1 1 0 0 1-1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 1-1 1zM5.636 4.222a1 1 0 0 1 0 1.414L4.93 6.344a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zm12.728 12.728a1 1 0 0 1 0 1.414l-.707.707a1 1 0 1 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0zM3 12a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm17 0a1 1 0 0 1-1 1h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1zM5.636 19.778a1 1 0 0 1-1.414 0l-.707-.707a1 1 0 1 1 1.414-1.414l.707.707a1 1 0 0 1 0 1.414zM18.364 6.344a1 1 0 0 1-1.414 0l-.707-.707a1 1 0 0 1 1.414-1.414l.707.707a1 1 0 0 1 0 1.414z" />
+                </svg>
+                Light Mode
+              </>
+            )}
+          </button>
+        );
+      };
 
-				return (
-					<div>
-						<ReadingProgressBar
-							color={color}
-							height={parseInt(height)}
-							useGradient={useGradient}
-							useGlow={useGlow}
-							position={position}
-							showAfterScroll={parseInt(showAfterScroll)}
-						/>
+      const App = () => {
+        const [color, setColor] = React.useState('#FFDD00');
+        const [height, setHeight] = React.useState(3);
+        const [useGradient, setUseGradient] = React.useState(true);
+        const [useGlow, setUseGlow] = React.useState(true);
+        const [position, setPosition] = React.useState('top');
+        const [showAfterScroll, setShowAfterScroll] = React.useState(100);
+        const [theme, setTheme] = React.useState('light');
 
-						<div className='container'>
-							<h1>React Reading Progress Bar Demo</h1>
-							<p>
-								Scroll down to see the reading progress bar in action. Use the
-								controls below to customize it.
-							</p>
+        React.useEffect(() => {
+          const savedTheme = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-							<div className='example-section'>
-								<h2>Customize the Progress Bar</h2>
+          if (savedTheme) {
+            setTheme(savedTheme);
+            document.documentElement.setAttribute('data-theme', savedTheme);
+          } else if (prefersDark) {
+            setTheme('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
+        }, []);
 
-								<div className='controls'>
-									<div className='control-group'>
-										<label htmlFor='color'>Color:</label>
-										<input
-											type='color'
-											id='color'
-											value={color}
-											onChange={e => setColor(e.target.value)}
-										/>
-									</div>
+        const toggleTheme = () => {
+          const newTheme = theme === 'light' ? 'dark' : 'light';
+          setTheme(newTheme);
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        };
 
-									<div className='control-group'>
-										<label htmlFor='height'>Height (px):</label>
-										<input
-											type='number'
-											id='height'
-											min='1'
-											max='20'
-											value={height}
-											onChange={e => setHeight(e.target.value)}
-										/>
-									</div>
+        return (
+          <div>
+            <ReadingProgressBar
+              color={color}
+              height={parseInt(height)}
+              useGradient={useGradient}
+              useGlow={useGlow}
+              position={position}
+              showAfterScroll={parseInt(showAfterScroll)}
+            />
 
-									<div className='control-group'>
-										<label htmlFor='useGradient'>Gradient:</label>
-										<select
-											id='useGradient'
-											value={useGradient.toString()}
-											onChange={e => setUseGradient(e.target.value === 'true')}
-										>
-											<option value='true'>Enabled</option>
-											<option value='false'>Disabled</option>
-										</select>
-									</div>
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
 
-									<div className='control-group'>
-										<label htmlFor='useGlow'>Glow Effect:</label>
-										<select
-											id='useGlow'
-											value={useGlow.toString()}
-											onChange={e => setUseGlow(e.target.value === 'true')}
-										>
-											<option value='true'>Enabled</option>
-											<option value='false'>Disabled</option>
-										</select>
-									</div>
+            <div className="container">
+              <h1>React Reading Progress Bar Demo</h1>
+              <p>
+                Scroll down to see the reading progress bar in action. Use the controls below to
+                customize it.
+              </p>
 
-									<div className='control-group'>
-										<label htmlFor='position'>Position:</label>
-										<select
-											id='position'
-											value={position}
-											onChange={e => setPosition(e.target.value)}
-										>
-											<option value='top'>Top</option>
-											<option value='bottom'>Bottom</option>
-										</select>
-									</div>
+              <div className="example-section">
+                <h2>Customize the Progress Bar</h2>
 
-									<div className='control-group'>
-										<label htmlFor='showAfterScroll'>
-											Show After Scroll (px):
-										</label>
-										<input
-											type='number'
-											id='showAfterScroll'
-											min='0'
-											max='500'
-											value={showAfterScroll}
-											onChange={e => setShowAfterScroll(e.target.value)}
-										/>
-									</div>
-								</div>
-							</div>
+                <div className="controls">
+                  <div className="control-group">
+                    <label htmlFor="color">Color:</label>
+                    <input
+                      type="color"
+                      id="color"
+                      value={color}
+                      onChange={e => setColor(e.target.value)}
+                    />
+                  </div>
 
-							<h2>Features</h2>
-							<ul>
-								<li>
-									Shows a horizontal progress bar that fills as the user scrolls
-									down the page
-								</li>
-								<li>Supports custom colors, gradients, and glow effects</li>
-								<li>Can be positioned at the top or bottom of the viewport</li>
-								<li>Appears/disappears based on scroll position</li>
-								<li>Fully customizable with various props</li>
-							</ul>
+                  <div className="control-group">
+                    <label htmlFor="height">Height (px):</label>
+                    <input
+                      type="number"
+                      id="height"
+                      min="1"
+                      max="20"
+                      value={height}
+                      onChange={e => setHeight(e.target.value)}
+                    />
+                  </div>
 
-							<h2>Sample Content</h2>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-								in dui mauris. Vivamus hendrerit arcu sed erat molestie
-								vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh
-								porttitor. Ut in nulla enim. Phasellus molestie magna non est
-								bibendum non venenatis nisl tempor. Suspendisse dictum feugiat
-								nisl ut dapibus.
-							</p>
+                  <div className="control-group">
+                    <label htmlFor="useGradient">Gradient:</label>
+                    <select
+                      id="useGradient"
+                      value={useGradient.toString()}
+                      onChange={e => setUseGradient(e.target.value === 'true')}
+                    >
+                      <option value="true">Enabled</option>
+                      <option value="false">Disabled</option>
+                    </select>
+                  </div>
 
-							<p>
-								Mauris iaculis porttitor posuere. Praesent id metus massa, ut
-								blandit odio. Proin quis tortor orci. Etiam at risus et justo
-								dignissim congue. Donec congue lacinia dui, a porttitor lectus
-								condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget odio
-								ac lectus vestibulum faucibus eget in metus. In pellentesque
-								faucibus vestibulum. Nulla at nulla justo, eget luctus tortor.
-							</p>
+                  <div className="control-group">
+                    <label htmlFor="useGlow">Glow Effect:</label>
+                    <select
+                      id="useGlow"
+                      value={useGlow.toString()}
+                      onChange={e => setUseGlow(e.target.value === 'true')}
+                    >
+                      <option value="true">Enabled</option>
+                      <option value="false">Disabled</option>
+                    </select>
+                  </div>
 
-							<div className='long-content'>
-								<h2>Keep Scrolling</h2>
-								<p>
-									This is a long content section to demonstrate the reading
-									progress bar. As you scroll down, the progress bar will fill
-									up to indicate how far you've read through the page.
-								</p>
+                  <div className="control-group">
+                    <label htmlFor="position">Position:</label>
+                    <select
+                      id="position"
+                      value={position}
+                      onChange={e => setPosition(e.target.value)}
+                    >
+                      <option value="top">Top</option>
+                      <option value="bottom">Bottom</option>
+                    </select>
+                  </div>
 
-								{Array(20)
-									.fill()
-									.map((_, i) => (
-										<p key={i}>
-											Paragraph {i + 1}: Lorem ipsum dolor sit amet, consectetur
-											adipiscing elit. Nullam in dui mauris. Vivamus hendrerit
-											arcu sed erat molestie vehicula. Sed auctor neque eu
-											tellus rhoncus ut eleifend nibh porttitor. Ut in nulla
-											enim. Phasellus molestie magna non est bibendum non
-											venenatis nisl tempor. Suspendisse dictum feugiat nisl ut
-											dapibus.
-										</p>
-									))}
-							</div>
-						</div>
-					</div>
-				)
-			}
+                  <div className="control-group">
+                    <label htmlFor="showAfterScroll">Show After Scroll (px):</label>
+                    <input
+                      type="number"
+                      id="showAfterScroll"
+                      min="0"
+                      max="500"
+                      value={showAfterScroll}
+                      onChange={e => setShowAfterScroll(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
 
-			ReactDOM.render(<App />, document.getElementById('root'))
-		</script>
-	</body>
+              <h2>Features</h2>
+              <ul>
+                <li>
+                  Shows a horizontal progress bar that fills as the user scrolls down the page
+                </li>
+                <li>Supports custom colors, gradients, and glow effects</li>
+                <li>Can be positioned at the top or bottom of the viewport</li>
+                <li>Appears/disappears based on scroll position</li>
+                <li>Fully customizable with various props</li>
+                <li>Supports dark and light modes</li>
+              </ul>
+
+              <h2>Sample Content</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
+                Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus
+                rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non
+                est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus.
+              </p>
+
+              <p>
+                Mauris iaculis porttitor posuere. Praesent id metus massa, ut blandit odio. Proin
+                quis tortor orci. Etiam at risus et justo dignissim congue. Donec congue lacinia
+                dui, a porttitor lectus condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget
+                odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus
+                vestibulum. Nulla at nulla justo, eget luctus tortor.
+              </p>
+
+              <div className="long-content">
+                <h2>Keep Scrolling</h2>
+                <p>
+                  This is a long content section to demonstrate the reading progress bar. As you
+                  scroll down, the progress bar will fill up to indicate how far you've read through
+                  the page.
+                </p>
+
+                {Array(20)
+                  .fill()
+                  .map((_, i) => (
+                    <p key={i}>
+                      Paragraph {i + 1}: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed
+                      auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim.
+                      Phasellus molestie magna non est bibendum non venenatis nisl tempor.
+                      Suspendisse dictum feugiat nisl ut dapibus.
+                    </p>
+                  ))}
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
 </html>
