@@ -22,17 +22,17 @@ jobs:
 
       - name: Move files to deployment directory (if exists)
         run: |
-          if [ -d "example" ]; then
-            mv example/* .
-            rm -rf example
+          if [ -d "examples" ]; then
+            mv examples/* .
+            rm -rf examples
           else
-            echo "⚠️ Warning: 'example/' directory not found. Skipping move step."
+            echo "⚠️ Warning: 'examples/' directory not found. Skipping move step."
           fi
 
       - name: Verify index.html exists
         run: |
           if [ ! -f "index.html" ]; then
-            echo "❌ ERROR: index.html not found! Stopping deployment."
+            echo "ERROR: index.html not found! Stopping deployment."
             exit 1
           fi
 
