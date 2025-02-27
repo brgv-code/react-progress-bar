@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReadingProgressBar Snapshots matches snapshot with all effects disabled 1`] = `
+<div>
+  <progress
+    aria-label="Reading progress"
+    class="reading-progress  hidden"
+    max="1"
+    style="position: sticky; top: 0px; z-index: 40; width: 100%; height: 3px; appearance: none; background-color: transparent; transition: opacity 300ms ease-in-out; --progress-color: #9b59b6; --progress-gradient: #9b59b6; --progress-glow: none;"
+    value="0"
+  />
+</div>
+`;
+
+exports[`ReadingProgressBar Snapshots matches snapshot with custom gradient colors 1`] = `
+<div>
+  <progress
+    aria-label="Reading progress"
+    class="reading-progress  hidden"
+    max="1"
+    style="position: sticky; top: 0px; z-index: 40; width: 100%; height: 3px; appearance: none; background-color: transparent; transition: opacity 300ms ease-in-out; --progress-color: #FFDD00; --progress-gradient: linear-gradient(90deg, #3498db, #2ecc71, #f1c40f); --progress-glow: 0 0 10px #FFDD00b2;"
+    value="0"
+  />
+</div>
+`;
+
+exports[`ReadingProgressBar Snapshots matches snapshot with custom styling 1`] = `
+<div>
+  <progress
+    aria-label="Reading progress"
+    class="reading-progress custom-progress hidden"
+    max="1"
+    style="position: sticky; bottom: 0px; z-index: 100; width: 100%; height: 8px; appearance: none; background-color: transparent; transition: opacity 300ms ease-in-out; --progress-color: #FF5500; --progress-gradient: linear-gradient(90deg, #FF5500, #FFA500, #FF8C00); --progress-glow: 0 0 10px #FF5500b2; border-radius: 4px;"
+    value="0"
+  />
+</div>
+`;
+
+exports[`ReadingProgressBar Snapshots matches snapshot with default props 1`] = `
+<div>
+  <progress
+    aria-label="Reading progress"
+    class="reading-progress  hidden"
+    max="1"
+    style="position: sticky; top: 0px; z-index: 40; width: 100%; height: 3px; appearance: none; background-color: transparent; transition: opacity 300ms ease-in-out; --progress-color: #FFDD00; --progress-gradient: linear-gradient(90deg, #FFDD00, #FFA500, #FF8C00); --progress-glow: 0 0 10px #FFDD00b2;"
+    value="0"
+  />
+</div>
+`;
+
+exports[`ReadingProgressBar Snapshots matches snapshot with glow disabled 1`] = `
+<div>
+  <progress
+    aria-label="Reading progress"
+    class="reading-progress  hidden"
+    max="1"
+    style="position: sticky; top: 0px; z-index: 40; width: 100%; height: 3px; appearance: none; background-color: transparent; transition: opacity 300ms ease-in-out; --progress-color: #e74c3c; --progress-gradient: linear-gradient(90deg, #e74c3c, #FFA500, #FF8C00); --progress-glow: none;"
+    value="0"
+  />
+</div>
+`;
+
+exports[`ReadingProgressBar Snapshots matches snapshot with gradient disabled 1`] = `
+<div>
+  <progress
+    aria-label="Reading progress"
+    class="reading-progress  hidden"
+    max="1"
+    style="position: sticky; top: 0px; z-index: 40; width: 100%; height: 3px; appearance: none; background-color: transparent; transition: opacity 300ms ease-in-out; --progress-color: #3498db; --progress-gradient: #3498db; --progress-glow: 0 0 10px #3498dbb2;"
+    value="0"
+  />
+</div>
+`;

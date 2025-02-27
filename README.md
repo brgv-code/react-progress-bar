@@ -3,7 +3,6 @@
 A customizable reading progress indicator for React applications that shows how
 far the user has scrolled down the page.
 
-![React Reading Progress Bar](https://img.shields.io/badge/progress-1-blue)
 ![React](https://img.shields.io/badge/React-18-purple)
 ![Rollup](https://img.shields.io/badge/Rollup-3-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
