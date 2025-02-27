@@ -26,8 +26,9 @@ jobs:
           rm -rf example
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
+          name: github-pages
           path: .
 
       - name: Deploy to GitHub Pages
