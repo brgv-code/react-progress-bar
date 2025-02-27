@@ -3,7 +3,7 @@
 A customizable reading progress indicator for React applications that shows how
 far the user has scrolled down the page.
 
-![React Reading Progress Bar](https://dummyimage.com/600x400/a5a1ed/080d59.png&text=React-progress-bar)
+![React Reading Progress Bar](https://img.shields.io/badge/react-progress?style=plastic)
 
 ## Features
 
