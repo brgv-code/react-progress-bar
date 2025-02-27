@@ -20,15 +20,15 @@ far the user has scrolled down the page.
 ## Installation
 
 ```bash
-npm install npm i react-progress-indicator-component
+npm install react-progress-indicator-component
 # or
-yarn add npm i react-progress-indicator-component
+yarn add  react-progress-indicator-component
 ```
 
 ## Usage
 
 ```jsx
-import { ReadingProgressBar } from 'npm i react-progress-indicator-component';
+import { ReadingProgressBar } from ' react-progress-indicator-component';
 
 // Basic usage
 function MyComponent() {
