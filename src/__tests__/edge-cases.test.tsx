@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'jest-axe';
 import ReadingProgressBar from '../ReadingProgressBar';
 
-expect.extend(toHaveNoViolations);
+import 'jest-axe/extend-expect';
 
 Object.defineProperty(window, 'scrollY', { value: 0, writable: true });
 Object.defineProperty(document.body, 'scrollHeight', {

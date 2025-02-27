@@ -20,41 +20,41 @@ far the user has scrolled down the page.
 ## Installation
 
 ```bash
-npm install react-reading-progress-bar
+npm install npm i react-progress-indicator-component
 # or
-yarn add react-reading-progress-bar
+yarn add npm i react-progress-indicator-component
 ```
 
 ## Usage
 
 ```jsx
-import { ReadingProgressBar } from 'react-reading-progress-bar'
+import { ReadingProgressBar } from 'npm i react-progress-indicator-component';
 
 // Basic usage
 function MyComponent() {
-	return (
-		<div>
-			<ReadingProgressBar />
-			{/* Your content */}
-		</div>
-	)
+  return (
+    <div>
+      <ReadingProgressBar />
+      {/* Your content */}
+    </div>
+  );
 }
 
 // Custom styling
 function MyCustomComponent() {
-	return (
-		<div>
-			<ReadingProgressBar
-				color='#FF5500'
-				height={5}
-				useGradient={true}
-				useGlow={true}
-				position='top'
-				zIndex={50}
-			/>
-			{/* Your content */}
-		</div>
-	)
+  return (
+    <div>
+      <ReadingProgressBar
+        color="#FF5500"
+        height={5}
+        useGradient={true}
+        useGlow={true}
+        position="top"
+        zIndex={50}
+      />
+      {/* Your content */}
+    </div>
+  );
 }
 ```
 
@@ -81,22 +81,22 @@ function MyCustomComponent() {
 
 ```jsx
 <ReadingProgressBar
-	useGradient={true}
-	gradientColors={['#3498db', '#2ecc71', '#f1c40f']}
-	height={4}
+  useGradient={true}
+  gradientColors={['#3498db', '#2ecc71', '#f1c40f']}
+  height={4}
 />
 ```
 
 ### Bottom Positioned
 
 ```jsx
-<ReadingProgressBar position='bottom' color='#9b59b6' height={3} />
+<ReadingProgressBar position="bottom" color="#9b59b6" height={3} />
 ```
 
 ### No Effects
 
 ```jsx
-<ReadingProgressBar useGradient={false} useGlow={false} color='#e74c3c' />
+<ReadingProgressBar useGradient={false} useGlow={false} color="#e74c3c" />
 ```
 
 ### Integration with Navbar
@@ -104,9 +104,9 @@ function MyCustomComponent() {
 ```jsx
 // Inside your Navbar component
 {
-	shouldShowProgressBar && (
-		<ReadingProgressBar height={4} color='#FFDD00' style={{ top: '56px' }} />
-	)
+  shouldShowProgressBar && (
+    <ReadingProgressBar height={4} color="#FFDD00" style={{ top: '56px' }} />
+  );
 }
 ```
 
@@ -116,9 +116,9 @@ The component uses CSS variables that can be overridden in your global CSS:
 
 ```css
 .reading-progress {
-	--progress-color: #ffdd00;
-	--progress-gradient: linear-gradient(90deg, #ffdd00, #ffa500, #ff8c00);
-	--progress-glow: 0 0 10px rgba(255, 221, 0, 0.7);
+  --progress-color: #ffdd00;
+  --progress-gradient: linear-gradient(90deg, #ffdd00, #ffa500, #ff8c00);
+  --progress-glow: 0 0 10px rgba(255, 221, 0, 0.7);
 }
 ```
 
