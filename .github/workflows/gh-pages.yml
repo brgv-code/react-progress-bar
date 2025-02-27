@@ -20,15 +20,25 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
-      - name: Move files to deployment directory
+      - name: Move files to deployment directory (if exists)
         run: |
-          mv examples/* .
-          rm -rf examples
+          if [ -d "example" ]; then
+            mv example/* .
+            rm -rf example
+          else
+            echo "⚠️ Warning: 'example/' directory not found. Skipping move step."
+          fi
+
+      - name: Verify index.html exists
+        run: |
+          if [ ! -f "index.html" ]; then
+            echo "❌ ERROR: index.html not found! Stopping deployment."
+            exit 1
+          fi
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v1
         with:
-          name: github-pages
           path: .
 
       - name: Deploy to GitHub Pages
