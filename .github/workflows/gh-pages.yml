@@ -22,8 +22,8 @@ jobs:
 
       - name: Move files to deployment directory
         run: |
-          mv example/* .
-          rm -rf example
+          mv examples/* .
+          rm -rf examples
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
