@@ -1,0 +1,31 @@
+.reading-progress {
+	--progress-color: #ffdd00;
+	--progress-gradient: linear-gradient(90deg, #ffdd00, #ffa500, #ff8c00);
+	--progress-glow: 0 0 10px rgba(255, 221, 0, 0.7);
+}
+
+.reading-progress::-webkit-progress-bar {
+	background-color: transparent;
+}
+
+.reading-progress::-webkit-progress-value {
+	background-image: var(--progress-gradient);
+	box-shadow: var(--progress-glow);
+	border-radius: 0 4px 4px 0;
+	transition: width 200ms ease-out;
+}
+
+.reading-progress::-moz-progress-bar {
+	background-image: var(--progress-gradient);
+	box-shadow: var(--progress-glow);
+	border-radius: 0 4px 4px 0;
+	transition: width 200ms ease-out;
+}
+
+.reading-progress.visible {
+	opacity: 1;
+}
+
+.reading-progress.hidden {
+	opacity: 0;
+}

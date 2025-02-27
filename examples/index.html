@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>React Reading Progress Bar Demo</title>
+		<style>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+					Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+				line-height: 1.6;
+				margin: 0;
+				padding: 0;
+				color: #333;
+			}
+
+			.container {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 20px;
+			}
+
+			h1 {
+				font-size: 2.5rem;
+				margin-bottom: 1rem;
+			}
+
+			h2 {
+				font-size: 1.8rem;
+				margin: 2rem 0 1rem;
+			}
+
+			p {
+				margin-bottom: 1.5rem;
+			}
+
+			.example-section {
+				margin-bottom: 3rem;
+				padding: 1.5rem;
+				border: 1px solid #ddd;
+				border-radius: 8px;
+			}
+
+			.controls {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1rem;
+				margin-bottom: 1.5rem;
+			}
+
+			.control-group {
+				display: flex;
+				flex-direction: column;
+				min-width: 150px;
+			}
+
+			label {
+				margin-bottom: 0.5rem;
+				font-weight: bold;
+			}
+
+			input,
+			select {
+				padding: 0.5rem;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+			}
+
+			.long-content {
+				height: 2000px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="root"></div>
+
+		<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+		<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+		<script type="text/babel">
+			const ReadingProgressBar = ({
+				color = '#FFDD00',
+				height = 3,
+				className = '',
+				useGradient = true,
+				useGlow = true,
+				gradientColors,
+				glowIntensity = 0.7,
+				showAfterScroll = 100,
+				position = 'top',
+				zIndex = 40,
+				initiallyVisible = false,
+				style = {},
+			}) => {
+				const [readingProgress, setReadingProgress] = React.useState(0)
+				const [isVisible, setIsVisible] = React.useState(initiallyVisible)
+
+				React.useEffect(() => {
+					const updateReadingProgress = () => {
+						const currentPosition = window.scrollY
+						const scrollHeight = document.body.scrollHeight - window.innerHeight
+
+						setIsVisible(currentPosition > showAfterScroll)
+
+						if (scrollHeight) {
+							setReadingProgress(
+								Number((currentPosition / scrollHeight).toFixed(2)),
+							)
+						}
+					}
+
+					updateReadingProgress()
+					window.addEventListener('scroll', updateReadingProgress)
+
+					return () =>
+						window.removeEventListener('scroll', updateReadingProgress)
+				}, [showAfterScroll])
+
+				const defaultGradientColors = [color, '#FFA500', '#FF8C00']
+				const finalGradientColors = gradientColors || defaultGradientColors
+				const gradientString = `linear-gradient(90deg, ${finalGradientColors.join(', ')})`
+
+				const hexOpacity = Math.floor(glowIntensity * 255)
+					.toString(16)
+					.padStart(2, '0')
+
+				const progressStyle = {
+					position: 'fixed',
+					[position]: 0,
+					left: 0,
+					zIndex,
+					width: '100%',
+					height: `${height}px`,
+					border: 'none',
+					appearance: 'none',
+					backgroundColor: 'transparent',
+					opacity: isVisible ? 1 : 0,
+					transition: 'opacity 300ms ease-in-out',
+					...style,
+				}
+
+				React.useEffect(() => {
+					const style = document.createElement('style')
+					style.textContent = `
+          progress {
+            --progress-color: ${color};
+            --progress-gradient: ${useGradient ? gradientString : color};
+            --progress-glow: ${useGlow ? `0 0 10px ${color}${hexOpacity}` : 'none'};
+          }
+          
+          progress::-webkit-progress-bar {
+            background-color: transparent;
+          }
+          
+          progress::-webkit-progress-value {
+            background-image: var(--progress-gradient);
+            box-shadow: var(--progress-glow);
+            border-radius: 0 4px 4px 0;
+            transition: width 200ms ease-out;
+          }
+          
+          progress::-moz-progress-bar {
+            background-image: var(--progress-gradient);
+            box-shadow: var(--progress-glow);
+            border-radius: 0 4px 4px 0;
+            transition: width 200ms ease-out;
+          }
+        `
+					document.head.appendChild(style)
+
+					return () => {
+						document.head.removeChild(style)
+					}
+				}, [color, useGradient, useGlow, gradientString, hexOpacity])
+
+				return (
+					<progress
+						className={`reading-progress ${className}`}
+						value={readingProgress}
+						max='1'
+						style={progressStyle}
+						aria-label='Reading progress'
+					/>
+				)
+			}
+
+			const App = () => {
+				const [color, setColor] = React.useState('#FFDD00')
+				const [height, setHeight] = React.useState(3)
+				const [useGradient, setUseGradient] = React.useState(true)
+				const [useGlow, setUseGlow] = React.useState(true)
+				const [position, setPosition] = React.useState('top')
+				const [showAfterScroll, setShowAfterScroll] = React.useState(100)
+
+				return (
+					<div>
+						<ReadingProgressBar
+							color={color}
+							height={parseInt(height)}
+							useGradient={useGradient}
+							useGlow={useGlow}
+							position={position}
+							showAfterScroll={parseInt(showAfterScroll)}
+						/>
+
+						<div className='container'>
+							<h1>React Reading Progress Bar Demo</h1>
+							<p>
+								Scroll down to see the reading progress bar in action. Use the
+								controls below to customize it.
+							</p>
+
+							<div className='example-section'>
+								<h2>Customize the Progress Bar</h2>
+
+								<div className='controls'>
+									<div className='control-group'>
+										<label htmlFor='color'>Color:</label>
+										<input
+											type='color'
+											id='color'
+											value={color}
+											onChange={e => setColor(e.target.value)}
+										/>
+									</div>
+
+									<div className='control-group'>
+										<label htmlFor='height'>Height (px):</label>
+										<input
+											type='number'
+											id='height'
+											min='1'
+											max='20'
+											value={height}
+											onChange={e => setHeight(e.target.value)}
+										/>
+									</div>
+
+									<div className='control-group'>
+										<label htmlFor='useGradient'>Gradient:</label>
+										<select
+											id='useGradient'
+											value={useGradient.toString()}
+											onChange={e => setUseGradient(e.target.value === 'true')}
+										>
+											<option value='true'>Enabled</option>
+											<option value='false'>Disabled</option>
+										</select>
+									</div>
+
+									<div className='control-group'>
+										<label htmlFor='useGlow'>Glow Effect:</label>
+										<select
+											id='useGlow'
+											value={useGlow.toString()}
+											onChange={e => setUseGlow(e.target.value === 'true')}
+										>
+											<option value='true'>Enabled</option>
+											<option value='false'>Disabled</option>
+										</select>
+									</div>
+
+									<div className='control-group'>
+										<label htmlFor='position'>Position:</label>
+										<select
+											id='position'
+											value={position}
+											onChange={e => setPosition(e.target.value)}
+										>
+											<option value='top'>Top</option>
+											<option value='bottom'>Bottom</option>
+										</select>
+									</div>
+
+									<div className='control-group'>
+										<label htmlFor='showAfterScroll'>
+											Show After Scroll (px):
+										</label>
+										<input
+											type='number'
+											id='showAfterScroll'
+											min='0'
+											max='500'
+											value={showAfterScroll}
+											onChange={e => setShowAfterScroll(e.target.value)}
+										/>
+									</div>
+								</div>
+							</div>
+
+							<h2>Features</h2>
+							<ul>
+								<li>
+									Shows a horizontal progress bar that fills as the user scrolls
+									down the page
+								</li>
+								<li>Supports custom colors, gradients, and glow effects</li>
+								<li>Can be positioned at the top or bottom of the viewport</li>
+								<li>Appears/disappears based on scroll position</li>
+								<li>Fully customizable with various props</li>
+							</ul>
+
+							<h2>Sample Content</h2>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+								in dui mauris. Vivamus hendrerit arcu sed erat molestie
+								vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh
+								porttitor. Ut in nulla enim. Phasellus molestie magna non est
+								bibendum non venenatis nisl tempor. Suspendisse dictum feugiat
+								nisl ut dapibus.
+							</p>
+
+							<p>
+								Mauris iaculis porttitor posuere. Praesent id metus massa, ut
+								blandit odio. Proin quis tortor orci. Etiam at risus et justo
+								dignissim congue. Donec congue lacinia dui, a porttitor lectus
+								condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget odio
+								ac lectus vestibulum faucibus eget in metus. In pellentesque
+								faucibus vestibulum. Nulla at nulla justo, eget luctus tortor.
+							</p>
+
+							<div className='long-content'>
+								<h2>Keep Scrolling</h2>
+								<p>
+									This is a long content section to demonstrate the reading
+									progress bar. As you scroll down, the progress bar will fill
+									up to indicate how far you've read through the page.
+								</p>
+
+								{Array(20)
+									.fill()
+									.map((_, i) => (
+										<p key={i}>
+											Paragraph {i + 1}: Lorem ipsum dolor sit amet, consectetur
+											adipiscing elit. Nullam in dui mauris. Vivamus hendrerit
+											arcu sed erat molestie vehicula. Sed auctor neque eu
+											tellus rhoncus ut eleifend nibh porttitor. Ut in nulla
+											enim. Phasellus molestie magna non est bibendum non
+											venenatis nisl tempor. Suspendisse dictum feugiat nisl ut
+											dapibus.
+										</p>
+									))}
+							</div>
+						</div>
+					</div>
+				)
+			}
+
+			ReactDOM.render(<App />, document.getElementById('root'))
+		</script>
+	</body>
+</html>
